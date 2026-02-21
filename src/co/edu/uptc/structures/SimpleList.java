@@ -33,8 +33,23 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		 Iterator<T> iter = new Iterator<T>() {
+            Node<T> aux = head;
+
+            @Override
+            public boolean hasNext() {
+                return aux != null;
+            }
+
+            @Override
+            public T next() {
+                T value = aux.getValue();
+                aux = aux.getNext();
+                return value;
+            }
+
+        };
+        return iter;
 	}
 
 	@Override
