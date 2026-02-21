@@ -63,8 +63,13 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		 Iterator<?> it = c.iterator();
+        while (it.hasNext()){
+            if(!this.contains(it.next())){
+                return false;
+            }
+        }
+        return true;
 	}
 
 	@Override
