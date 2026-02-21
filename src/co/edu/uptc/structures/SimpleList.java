@@ -15,8 +15,15 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		Node <T> aux= head;
+		int counter=0;
+
+		while(aux!=null){
+			counter++;
+			aux = aux.getNext();
+		}
+
+		return counter;
 	}
 
 	@Override
