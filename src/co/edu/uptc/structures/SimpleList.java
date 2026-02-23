@@ -72,9 +72,23 @@ public class SimpleList<T> implements List<T> {
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+	public <E> E[] toArray(E[] a) {
+		int size = size();
+		if (a.length < size) {
+			a = java.util.Arrays.copyOf(a, size);
+		}
+		Node<T> aux=this.head;
+		int count = 0;
+		while (aux != null) {
+			a[count] = (E) aux.getValue();
+			count++;
+			aux = aux.getNext();
+		}
+
+		if (a.length > size) {
+			a[size] = null;
+		}
+		return a;
 	}
 
 	@Override
