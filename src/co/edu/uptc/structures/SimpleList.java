@@ -226,8 +226,7 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		head=null;
 	}
 
     @Override
