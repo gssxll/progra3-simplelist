@@ -262,7 +262,19 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public List<T> subList(int fromIndex, int toIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		if(fromIndex<0 || toIndex>size() || fromIndex>toIndex){
+            throw new IndexOutOfBoundsException();
+        }
+        SimpleList<T> subList = new SimpleList<>();
+        Node<T> aux = head;
+        int actualIndex=0;
+        while(aux!=null && actualIndex<toIndex){
+            if(actualIndex>=fromIndex){
+                subList.add(aux.getValue());
+            }
+            aux=aux.getNext();
+            actualIndex++;
+        }
+		return subList;
 	}
 }
