@@ -92,10 +92,19 @@ public class SimpleList<T> implements List<T> {
 	}
 
 	@Override
-	public boolean add(T e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public boolean add(T e) {
+        Node<T> newNode = new Node<>(e);
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node<T> current = head;
+            while (current.getNext() != null) {
+                current = current.getNext();
+            }
+            current.setNext(newNode);
+        }
+        return true;
+    }
 
 	@Override
 	public boolean remove(Object o) {
@@ -399,4 +408,40 @@ public void add(int index, T element) {
         }
 		return subList;
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (o instanceof SimpleList) {
+            SimpleList<?> that = (SimpleList<?>) o;
+            if (this.size() != that.size()) return false;
+            for (int i = 0; i < this.size(); i++) {
+                T thisElem = this.get(i);
+                Object thatElem = that.get(i);
+                if (thisElem == null) {
+                    if (thatElem != null) return false;
+                } else {
+                    if (!thisElem.equals(thatElem)) return false;
+                }
+            }
+            return true;
+        }
+        if (o instanceof List) {
+            List<?> thatList = (List<?>) o;
+            if (this.size() != thatList.size()) return false;
+            for (int i = 0; i < this.size(); i++) {
+                T thisElem = this.get(i);
+                Object thatElem = thatList.get(i);
+                if (thisElem == null) {
+                    if (thatElem != null) return false;
+                } else {
+                    if (!thisElem.equals(thatElem)) return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

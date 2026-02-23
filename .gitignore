@@ -24,3 +24,25 @@
 hs_err_pid*
 replay_pid*
 
+# PDF Files
+*.pdf
+
+# IntelliJ IDEA Files
+*.iml
+.idea/
+*.iws
+*.ipr
+
+# XML Files
+*.xml
+
+# Temp backup Files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# System  Files
+*.DS_Store
+Thumbs.db
