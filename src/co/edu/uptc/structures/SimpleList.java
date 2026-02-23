@@ -370,8 +370,11 @@ public void add(int index, T element) {
 
 	@Override
 	public ListIterator<T> listIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		/* el metodo ListIterator<t> es un metodo que trabaja con nodos next y previous,
+		sin embargo la lista simple solo trabaja con nodos next, por lo que no tiene validez implementarlo
+		en este caso */
+		
+		throw new UnsupportedOperationException("ListIterator no es soportado en una lista simplemente enlazada");
 	}
 
 	@Override
