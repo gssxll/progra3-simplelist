@@ -1,6 +1,7 @@
 package co.edu.uptc.structures;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -15,14 +16,20 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		Node <T> aux= head;
+		int counter=0;
+
+		while(aux!=null){
+			counter++;
+			aux = aux.getNext();
+		}
+
+		return counter;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return head == null;
 	}
 
 	@Override
@@ -33,20 +40,55 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		 Iterator<T> iter = new Iterator<T>() {
+            Node<T> aux = head;
+
+            @Override
+            public boolean hasNext() {
+                return aux != null;
+            }
+
+            @Override
+            public T next() {
+                T value = aux.getValue();
+                aux = aux.getNext();
+                return value;
+            }
+
+        };
+        return iter;
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+	    Object[] array = new Object[size()];
+	    Node<T> current = head;
+	    int index = 0;
+	    while (current != null) {
+	        array[index++] = current.getValue();
+	        current = current.getNext();
+	    }
+	    return array;
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+	public <E> E[] toArray(E[] a) {
+		int size = size();
+		if (a.length < size) {
+			a = java.util.Arrays.copyOf(a, size);
+		}
+		Node<T> aux=this.head;
+		int count = 0;
+		while (aux != null) {
+			a[count] = (E) aux.getValue();
+			count++;
+			aux = aux.getNext();
+		}
+
+		if (a.length > size) {
+			a[size] = null;
+		}
+		return a;
 	}
 
 	@Override
@@ -63,32 +105,114 @@ public class SimpleList<T> implements List<T> {
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		 Iterator<?> it = c.iterator();
+        while (it.hasNext()){
+            if(!this.contains(it.next())){
+                return false;
+            }
+        }
+        return true;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends T> c) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean modified = false;
+        if ( c.isEmpty()) {
+            modified = false; 
+        }else{ 
+                for (T dataCollection : c) {
+                add(dataCollection); 
+                modified = true;
+            }
+            }
+        return modified; 
 	}
 
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	    if (c == null) throw new NullPointerException("Collection cannot be null");
+	    if (index < 0 || index > size()) throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+	    if (c.isEmpty()) return false;
 
+	    for (T element : c) {
+	        if (element == null) throw new NullPointerException("Collection cannot contain null elements");
+	    }
+
+	    Node<T> prev = null;
+	    Node<T> current = head;
+	    for (int i = 0; i < index; i++) {
+	        prev = current;
+	        current = current.getNext();
+	    }
+
+	    for (T element : c) {
+	        Node<T> newNode = new Node<>(element);
+	        newNode.setNext(current);
+	        if (prev == null) {
+	            head = newNode;
+	        } else {
+	            prev.setNext(newNode);
+	        }
+	        prev = newNode;
+	    }
+
+	    return true;
+	}
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		if (c == null) {
+			throw new NullPointerException();
+		}
+
+		if (head == null) {
+			return false;
+
+		} else {
+			Node<T> aux = head;
+			Node<T> prev = aux;
+			boolean delete = false;
+
+			while (aux != null) {
+
+				if (c.contains(aux.getValue())) {
+					if (prev == null) {
+						head = aux.getNext();
+					} else {
+						prev.setNext(aux.getNext());
+					}
+					delete = true;
+				} else {
+					prev = aux;
+				}
+				aux = aux.getNext();
+			}
+			return delete;
+		}
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean modified = false;
+		while (head != null && !c.contains(head.getValue())) {
+			head = head.getNext();
+			modified = true;
+		}
+		if (head == null) {
+			return modified;
+		}
+		Node<T> prev = head;
+		Node<T> current = head.getNext();
+		while (current != null) {
+			if (!c.contains(current.getValue())) {
+				prev.setNext(current.getNext());
+				modified = true;
+			} else {
+				prev = current;
+			}
+			current = current.getNext();
+		}
+		return modified;
 	}
 
 	@Override
@@ -97,17 +221,37 @@ public class SimpleList<T> implements List<T> {
 
 	}
 
-	@Override
-	public T get(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public T get(int index){
+        int counter =0;
+
+        if (index>=size() || index<0 ) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node<T> next = head;
+            while (counter< index) {
+                next = next.getNext();
+                counter++;
+            }
+
+        return next.getValue();
+        
+    }
 
 	@Override
-	public T set(int index, T element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public T set(int index, T element) {
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+        }
+        Node<T> current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.getNext();
+        }
+        T oldValue = current.getValue();
+        current.setValue(element);
+        return oldValue;
+    }
 
 	@Override
 public void add(int index, T element) {
@@ -163,8 +307,16 @@ public void add(int index, T element) {
 
 	@Override
 	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+		Node<T> aux = head;
+        int i = 0;
+        while(aux != null){
+            if(aux.getValue().equals(o)){
+                return i;
+            }
+            i++;
+            aux = aux.getNext();
+        }
+        return -1;
 	}
 
 	@Override
@@ -191,13 +343,36 @@ public void add(int index, T element) {
 
 	@Override
 	public ListIterator<T> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        ArrayList<T> temp = new ArrayList<>();
+
+        Node<T> current = head;
+        while (current != null) {
+            temp.add(current.getValue());
+            current = current.getNext();
+        }
+
+        return temp.listIterator(index);
 	}
 
 	@Override
 	public List<T> subList(int fromIndex, int toIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		if(fromIndex<0 || toIndex>size() || fromIndex>toIndex){
+            throw new IndexOutOfBoundsException();
+        }
+        SimpleList<T> subList = new SimpleList<>();
+        Node<T> aux = head;
+        int actualIndex=0;
+        while(aux!=null && actualIndex<toIndex){
+            if(actualIndex>=fromIndex){
+                subList.add(aux.getValue());
+            }
+            aux=aux.getNext();
+            actualIndex++;
+        }
+		return subList;
 	}
 }
