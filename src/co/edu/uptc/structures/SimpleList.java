@@ -210,10 +210,18 @@ public class SimpleList<T> implements List<T> {
 	}
 
 	@Override
-	public T set(int index, T element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public T set(int index, T element) {
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+        }
+        Node<T> current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.getNext();
+        }
+        T oldValue = current.getValue();
+        current.setValue(element);
+        return oldValue;
+    }
 
 	@Override
 	public void add(int index, T element) {
