@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class SimpleList<T> implements List<T> {
-    private Node<T> head;
+	private Node<T> head;
 
-    public SimpleList() {
-    	head = null;
-    }
+	public SimpleList() {
+		head = null;
+	}
 
 	@Override
 	public int size() {
@@ -44,9 +44,23 @@ public class SimpleList<T> implements List<T> {
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
+	public <E> E[] toArray(E[] a) {
+		int size = size();
+		if (a.length < size) {
+			a = java.util.Arrays.copyOf(a, size);
+		}
+		Node<T> aux=this.head;
+		int count = 0;
+		while (aux != null) {
+			a[count] = (E) aux.getValue();
+			count++;
+			aux = aux.getNext();
+		}
+
+		if (a.length > size) {
+			a[size] = null;
+		}
+		return a;
 	}
 
 	@Override
@@ -94,7 +108,7 @@ public class SimpleList<T> implements List<T> {
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -112,7 +126,7 @@ public class SimpleList<T> implements List<T> {
 	@Override
 	public void add(int index, T element) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
