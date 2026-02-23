@@ -97,11 +97,23 @@ public class SimpleList<T> implements List<T> {
 		
 	}
 
-	@Override
-	public T get(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public T get(int index){
+        int counter =0;
+
+        if (index>=size() || index<0 ) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node<T> next = head;
+            while (counter< index) {
+                next = next.getNext();
+                counter++;
+            }
+
+        return next.getValue();
+        
+    }
 
 	@Override
 	public T set(int index, T element) {
